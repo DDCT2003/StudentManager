@@ -1,0 +1,13 @@
+<project>
+  <module>
+    <name>StudentManager</name>
+    <checkstyle>
+      <configurations>
+        <configuration>
+          <property name="checkstyle.cache.file" value="checkstyle-cache"/>
+          <property name="checkstyle.config" value="google_checks.xml"/>
+        </configuration>
+      </configurations>
+    </checkstyle>
+  </module>
+</project>
