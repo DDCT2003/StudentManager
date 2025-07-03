@@ -1,0 +1,7 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Student Manager,com.example.studentmanager,GradeValidator,1,16,2,2,0,3,2,2,0,2
+Student Manager,com.example.studentmanager,Student,0,30,0,0,0,7,0,4,0,4
+Student Manager,com.example.studentmanager,ConsoleStudentPrinter,0,25,0,4,0,7,0,4,0,2
+Student Manager,com.example.studentmanager,Main,57,0,0,0,12,0,1,0,1,0
+Student Manager,com.example.studentmanager,StudentManager,0,49,0,4,0,11,0,5,0,3
+Student Manager,com.example.studentmanager,NameValidator,0,15,1,3,0,3,1,3,0,2

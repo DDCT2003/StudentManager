@@ -1,0 +1,9 @@
+com\example\studentmanager\NameValidator.class
+com\example\studentmanager\StudentPrinter.class
+com\example\studentmanager\StudentValidator.class
+com\example\studentmanager\Student.class
+com\example\studentmanager\StudentManager.class
+com\example\studentmanager\StudentRegistry.class
+com\example\studentmanager\Main.class
+com\example\studentmanager\ConsoleStudentPrinter.class
+com\example\studentmanager\GradeValidator.class

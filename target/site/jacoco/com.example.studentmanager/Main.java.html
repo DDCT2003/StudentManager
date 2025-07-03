@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Main.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Student Manager</a> &gt; <a href="index.source.html" class="el_package">com.example.studentmanager</a> &gt; <span class="el_source">Main.java</span></div><h1>Main.java</h1><pre class="source lang-java linenums">package com.example.studentmanager;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * Interface for student registration operations.
+ */
+interface StudentRegistry {
+    /**
+     * Adds a student.
+     *
+     * @param student the student to add.
+     */
+    void addStudent(Student student);
+
+    /**
+     * Returns the list of students.
+     *
+     * @return unmodifiable list of students.
+     */
+    List&lt;Student&gt; getStudents();
+}
+
+/**
+ * Interface for printing student information.
+ */
+interface StudentPrinter {
+    /**
+     * Prints the list of students.
+     *
+     * @param students list of students to print.
+     */
+    void printStudents(List&lt;Student&gt; students);
+}
+
+/**
+ * Interface for student validation.
+ */
+interface StudentValidator {
+    /**
+     * Validates a student.
+     *
+     * @param student student to validate.
+     * @return true if valid, false otherwise.
+     */
+    boolean isValid(Student student);
+}
+
+/**
+ * Student entity class.
+ */
+class Student {
+    /** Name of the student. */
+    private final String name;
+    /** Grade of the student. */
+    private final double grade;
+
+    /**
+     * Constructor.
+     *
+     * @param studentName  name of the student.
+     * @param studentGrade grade of the student.
+     */
+<span class="fc" id="L66">    Student(final String studentName, final double studentGrade) {</span>
+<span class="fc" id="L67">        this.name = studentName;</span>
+<span class="fc" id="L68">        this.grade = studentGrade;</span>
+<span class="fc" id="L69">    }</span>
+
+    /**
+     * Gets the student's name.
+     *
+     * @return the name.
+     */
+    String getName() {
+<span class="fc" id="L77">        return name;</span>
+    }
+
+    /**
+     * Gets the student's grade.
+     *
+     * @return the grade.
+     */
+    double getGrade() {
+<span class="fc" id="L86">        return grade;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L91">        return &quot;Estudiante: &quot; + name + &quot;, Calificación: &quot; + grade;</span>
+    }
+}
+
+/**
+ * Manages student registration.
+ */
+class StudentManager implements StudentRegistry {
+    /** List of students. */
+<span class="fc" id="L100">    private final List&lt;Student&gt; students = new ArrayList&lt;Student&gt;();</span>
+    /** List of validators. */
+    private final List&lt;StudentValidator&gt; validators;
+
+    /**
+     * Constructor.
+     *
+     * @param validatorList list of validators.
+     */
+<span class="fc" id="L109">    StudentManager(final List&lt;StudentValidator&gt; validatorList) {</span>
+<span class="fc" id="L110">        this.validators = validatorList;</span>
+<span class="fc" id="L111">    }</span>
+
+    @Override
+    public void addStudent(final Student student) {
+<span class="fc bfc" id="L115" title="All 2 branches covered.">        for (StudentValidator validator : validators) {</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">            if (!validator.isValid(student)) {</span>
+<span class="fc" id="L117">                throw new IllegalArgumentException(</span>
+                        &quot;Estudiante no válido: &quot; + student);
+            }
+<span class="fc" id="L120">        }</span>
+<span class="fc" id="L121">        students.add(student);</span>
+<span class="fc" id="L122">    }</span>
+
+    @Override
+    public List&lt;Student&gt; getStudents() {
+<span class="fc" id="L126">        return Collections.unmodifiableList(students);</span>
+    }
+}
+
+/**
+ * Prints student information to the console.
+ */
+<span class="fc" id="L133">class ConsoleStudentPrinter implements StudentPrinter {</span>
+    @Override
+    public void printStudents(final List&lt;Student&gt; students) {
+<span class="fc bfc" id="L136" title="All 2 branches covered.">        if (students.isEmpty()) {</span>
+<span class="fc" id="L137">            System.out.println(&quot;No hay estudiantes registrados.&quot;);</span>
+        } else {
+<span class="fc bfc" id="L139" title="All 2 branches covered.">            for (Student student : students) {</span>
+<span class="fc" id="L140">                System.out.println(student);</span>
+<span class="fc" id="L141">            }</span>
+        }
+<span class="fc" id="L143">    }</span>
+}
+
+/**
+ * Validates student names.
+ */
+<span class="fc" id="L149">class NameValidator implements StudentValidator {</span>
+    @Override
+    public boolean isValid(final Student student) {
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">        return student.getName() != null</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">                &amp;&amp; !student.getName().trim().isEmpty();</span>
+    }
+}
+
+/**
+ * Validates student grades.
+ */
+<span class="fc" id="L160">class GradeValidator implements StudentValidator {</span>
+    /** Minimum allowed grade. */
+    private static final double MIN_GRADE = 0.0;
+    /** Maximum allowed grade. */
+    private static final double MAX_GRADE = 100.0;
+
+    @Override
+    public boolean isValid(final Student student) {
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">        return student.getGrade() &gt;= MIN_GRADE</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">                &amp;&amp; student.getGrade() &lt;= MAX_GRADE;</span>
+    }
+}
+
+/**
+ * Main application class.
+ */
+public final class Main {
+    /** Previene la instanciación de Main. */
+    private Main() {
+        // Constructor privado para Checkstyle
+    }
+
+    /** John's grade (avoid magic number). */
+    private static final double JOHN_GRADE = 85.5;
+    /** Jane's grade (avoid magic number). */
+    private static final double JANE_GRADE = 91.2;
+
+    /**
+     * Main method.
+     *
+     * @param args command line arguments.
+     */
+    public static void main(final String[] args) {
+<span class="nc" id="L193">        List&lt;StudentValidator&gt; validators = new ArrayList&lt;StudentValidator&gt;();</span>
+<span class="nc" id="L194">        validators.add(new NameValidator());</span>
+<span class="nc" id="L195">        validators.add(new GradeValidator());</span>
+
+<span class="nc" id="L197">        StudentRegistry manager = new StudentManager(validators);</span>
+<span class="nc" id="L198">        StudentPrinter printer = new ConsoleStudentPrinter();</span>
+
+        try {
+<span class="nc" id="L201">            manager.addStudent(new Student(&quot;John Doe&quot;, JOHN_GRADE));</span>
+<span class="nc" id="L202">            manager.addStudent(new Student(&quot;Jane Doe&quot;, JANE_GRADE));</span>
+<span class="nc" id="L203">        } catch (IllegalArgumentException ex) {</span>
+<span class="nc" id="L204">            System.out.println(&quot;Error: &quot; + ex.getMessage());</span>
+<span class="nc" id="L205">        }</span>
+
+<span class="nc" id="L207">        printer.printStudents(manager.getStudents());</span>
+<span class="nc" id="L208">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
